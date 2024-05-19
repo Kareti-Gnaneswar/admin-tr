@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import HRQuestions from './hrQuestions';
 import MCQComponent from './MCQs';
+import NotificationContent from './NotificationContent';
 
 function App() {
   const [selectedButton, setSelectedButton] = useState(null);
@@ -24,7 +25,7 @@ function App() {
   const renderContent = () => {
     switch (selectedButton) {
       case 'Send a Notification':
-        return <div>Send a Notification content</div>;
+        return <NotificationContent/>;
       case 'Create Subject':
         return <div>Create Subject</div>;
       case 'TR questions':
