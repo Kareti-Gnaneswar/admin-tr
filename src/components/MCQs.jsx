@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './MCQComponent.css'; // Import CSS file
 
 const MCQComponent = () => {
@@ -8,17 +9,23 @@ const MCQComponent = () => {
   const [choices, setChoices] = useState(['', '', '', '']);
   const [correctChoice, setCorrectChoice] = useState(null);
   const [explanation, setExplanation] = useState('');
+  const [error, setError] = useState(null); // Define the error state variable
 
   useEffect(() => {
-    fetchSubjectsFromDatabase(); 
+    async function fetchOptions() {
+      try {
+        const response = await axios.get("http://localhost:8080/api/subjects/getsubjects"); // Change this to your backend endpoint
+        const subjectNames = response.data.map(subject => subject.subjectName);
+        setSubjects(subjectNames);
+      } catch (error) {
+        console.error("Error fetching options:", error);
+        setError("Error fetching options. Please try again later.");
+      }
+    }
+
+    fetchOptions();
   }, []);
 
-  const fetchSubjectsFromDatabase = () => {
-    fetch('/api/subjects')
-      .then(response => response.json())
-      .then(data => setSubjects(data.subjects))
-      .catch(error => console.error('Error fetching subjects:', error));
-  };
 
   const handleSubjectChange = (e) => {
     setSelectedSubject(e.target.value);
@@ -55,7 +62,7 @@ const MCQComponent = () => {
   };
 
   const submitMCQToServer = (mcq) => {
-    fetch('/api/add-mcq', {
+    fetch('http://localhost:8080/api/admin/mcq', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -108,6 +115,7 @@ const MCQComponent = () => {
         </div>
         <textarea value={explanation} onChange={handleExplanationChange} placeholder="Add explanation for correct answer" />
         <button type="submit">Submit</button>
+        {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message if error occurs */}
       </form>
     </div>
   );

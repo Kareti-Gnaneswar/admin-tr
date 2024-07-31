@@ -3,7 +3,8 @@ import './App.css';
 import HRQuestions from './hrQuestions';
 import MCQComponent from './MCQs';
 import NotificationContent from './NotificationContent';
-
+import SubjectForm from './Subjects';
+import TRquestions from './TRquestions';
 function App() {
   const [selectedButton, setSelectedButton] = useState(null);
   
@@ -27,9 +28,9 @@ function App() {
       case 'Send a Notification':
         return <NotificationContent/>;
       case 'Create Subject':
-        return <div>Create Subject</div>;
+        return <SubjectForm/>;
       case 'TR questions':
-        return <div>Upload TR questions</div>;
+        return <TRquestions/>;
       case 'HR questions':
         return <HRQuestions />;
       case 'MCQs':
